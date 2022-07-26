@@ -54,6 +54,20 @@ const grassRoughnessTexture = textureLoader.load(
   "/textures/grass/roughness.jpg"
 );
 
+grassColorTexture.repeat.set(4, 4);
+grassAmbientOcclusionTexture.repeat.set(4, 4);
+grassNormalTexture.repeat.set(4, 4);
+grassRoughnessTexture.repeat.set(4, 4);
+
+grassColorTexture.wrapS = THREE.RepeatWrapping;
+grassAmbientOcclusionTexture.wrapS = THREE.RepeatWrapping;
+grassNormalTexture.wrapS = THREE.RepeatWrapping;
+grassRoughnessTexture.wrapS = THREE.RepeatWrapping;
+
+grassColorTexture.wrapT = THREE.RepeatWrapping;
+grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping;
+grassNormalTexture.wrapT = THREE.RepeatWrapping;
+grassRoughnessTexture.wrapT = THREE.RepeatWrapping;
 /**
  * House
  */
@@ -200,10 +214,19 @@ doorSlab.rotation.z = -Math.PI * 0.5;
 // Floor
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(40, 40),
-  new THREE.MeshStandardMaterial({ color: "#a9c388" })
+  new THREE.MeshStandardMaterial({
+    map: grassColorTexture,
+    aoMap: grassAmbientOcclusionTexture,
+    normalMap: grassNormalTexture,
+    roughnessMap: grassRoughnessTexture,
+  })
 );
 floor.rotation.x = -Math.PI * 0.5;
 floor.position.y = 0;
+floor.geometry.setAttribute(
+  "uv2",
+  new THREE.Float32BufferAttribute(floor.geometry.attributes.uv.array, 2)
+);
 
 scene.add(floor);
 
